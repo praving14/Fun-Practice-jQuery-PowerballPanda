@@ -1,0 +1,65 @@
+
+header{
+	height:100px;
+	text-align:center;
+	background:black;
+	color:white;
+}
+.generatedNumbers{
+	float:left;
+	width:20%;
+}
+.powerplay{
+	clear:both;
+	margin:10% 0 0 60%;
+}
+.generatedNumbers ul li{
+	margin-top:15px;
+}
+.generatedNumbers ul{
+	overflow-y:scroll;
+	height:450px;
+}
+section{
+	margin:5%;
+	float:left;
+	width:69%;
+	height:auto;
+}
+.circles h1 span{
+	float:left;
+	margin:10px;
+	text-align:center;
+	line-height:50px;
+}
+.white, .red{
+	height:50px;
+	width:50px;
+	border-radius:25px;
+	box-shadow:2px 2px 3px #000;
+}
+
+.timeOfNextDrawing{
+	clear:both;
+	margin: 5% 0 0 30% ;	
+}
+.panda{
+	height:200px;
+	margin:0 0 0 29%;
+	clear:both;
+}
+#remainingday, #remaininghour, #remainingminute, #remainingsecond{
+	border:1px solid black;
+	background:black;
+	color:white;
+	font-weight:bold;
+}
+
+footer{
+	margin-top:5%;
+	font-size:15px;
+	text-align:center;
+	clear:both;
+	padding:10px;
+	border-top:1px solid black;
+}
