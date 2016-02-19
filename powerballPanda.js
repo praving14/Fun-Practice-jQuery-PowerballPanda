@@ -1,7 +1,7 @@
 
 
 // Generate A random number
-function genNumberForBall(min,max) {
+function genSingleNumberForBall(min,max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -15,6 +15,13 @@ var num3 = document.getElementById('whiteball3');
 var num4 = document.getElementById('whiteball4');
 var num5 = document.getElementById('whiteball5');
 var red1 = document.getElementById('powerball');
+var ulist = document.getElementById('listOfGeneratedNumbers');
+var ppnum = document.getElementById('powerplay');
+var remainday = document.getElementById('remainingday');
+var remainhour = document.getElementById('remaininghour');
+var remainmin = document.getElementById('remainingminute');
+var remainsec = document.getElementById('remainingsecond');
+    
 
 //array of the number List
 // ---------------------------------------ARRAY OF ALL MY ORDERS-------------------------------
@@ -24,14 +31,73 @@ var counter = numberList.length - 1;
 numberList[counter] = [6];
 
 
-// Generate an object
+// Generate an array of randomly generated numbers arrange them in ascending order except the last one;
 function generatepowerBallNumbers() {
-    numberList[counter]
+    var i =0;
+    while (i < 5) {
+        var number = genSingleNumberForBall(1, 69);
+        for (var j = 0 ; j < i ; j++) {
+            if (number == numberList[counter][j]) {
+                number = genSingleNumberForBall(1, 69);
+            }
+        }
+        numberList[counter][i] = number;
+        i = i + 1;
+    }
+    numberList[counter].sort(function (a, b) { return a - b });
+    numberList[counter][5] = genSingleNumberForBall(1, 26);
 }
 
 /*
 * -----------------------------------------GENERATE NEW POWERBALL NUMBERS--------------------------------------
 */
-pandaImage.addEventListener('click', function () {
-    
+pandaImage.addEventListener('click',function(){
+    generatepowerBallNumbers();
+    num1.innerHTML = numberList[counter][0];
+    num2.innerHTML = numberList[counter][1];
+    num3.innerHTML = numberList[counter][2];
+    num4.innerHTML = numberList[counter][3];
+    num5.innerHTML = numberList[counter][4];
+    red1.innerHTML = numberList[counter][5];
+    ppnum.innerHTML = genSingleNumberForBall(1, 5);
+    addtothelist();
 });
+
+
+/*
+* -------------------ADD THE PAST GENERATED NUMBERS IN THE LIST ON THE LEFT--------------------------------------
+*/
+function addtothelist() {
+    var list = '';
+    for (var i = 0; i < 5; i++) {
+        list += numberList[counter][i] + ' ';
+    }
+    list = list + ' Powerball:  ' + numberList[counter][5];
+    var row = document.createElement("li");
+    var node = document.createTextNode(list);
+    row.appendChild(node);
+    ulist.appendChild(row);
+}
+
+/*
+* ---------------------------------------------COUNTDOWN TO DAWING DATE---------------------
+*/
+var drawingday = new Date("Wed Feb 24 2016 18:00:00 GMT-0500 (Eastern Standard Time)");
+function getRemaining(drawingday, today) {
+    time = Date.parse(drawingday) - Date.parse(today);
+    return{
+        'day': drawingday.getDate() - today.getDate(),
+        'hour': Math.floor((time / (1000 * 60 * 60)) % 24),
+        'minutes': Math.floor((time / 1000 / 60) % 60),
+        'seconds': Math.floor((time / 1000) % 60),
+        }
+}
+function updateClock(){
+        t = getRemaining(drawingday, new Date());
+        remainday.innerText = t.day;
+        remainhour.innerText = t.hour;
+        remainmin.innerText = t.minutes;
+        remainsec.innerText = t.seconds;
+}
+updateClock();
+setInterval(updateClock(), 1000);
