@@ -108,8 +108,8 @@ var timers = setInterval(function(){
 			var ttoday = new Date();
 			if (ttoday.getDay() == 6){
 				drawingday.setDate(drawingday.getDate() + 4 );
-			} else if(ttoday.getDay() ==4){
-				drawingday.setDate(drawingday.getDate() + 4 );
+			} else if(ttoday.getDay() ==3){
+				drawingday.setDate(drawingday.getDate() + 3 );
 			}
 			t = getRemaining(drawingday, new Date());
 			// to make sure there is new date after every drawing
