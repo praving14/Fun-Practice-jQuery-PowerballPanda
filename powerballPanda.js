@@ -26,13 +26,13 @@ var remainsec = document.getElementById('remainingsecond');
 //array of the number List
 // ---------------------------------------ARRAY OF ALL MY ORDERS-------------------------------
 var numberList = [];
-var counter = numberList.length - 1;
+var counter = numberList.length;
 // we create an object inside the array orderList where each object will have the necessay information about an order
-numberList[counter] = [6];
-
 
 // Generate an array of randomly generated numbers arrange them in ascending order except the last one;
 function generatepowerBallNumbers() {
+	numberList[counter] = [6];
+	console.log("counter number"+counter);
     var i =0;
     while (i < 5) {
         var number = genSingleNumberForBall(1, 69);
@@ -40,6 +40,7 @@ function generatepowerBallNumbers() {
             if (number == numberList[counter][j]) {
                 number = genSingleNumberForBall(1, 69);
             }
+			//I need to make sure that this is properly checked and it doesnot produce same number more than once 
         }
         numberList[counter][i] = number;
         i = i + 1;
@@ -51,7 +52,7 @@ function generatepowerBallNumbers() {
 /*
 * -----------------------------------------GENERATE NEW POWERBALL NUMBERS--------------------------------------
 */
-pandaImage.addEventListener('click',function(){
+var everyMinuteGenerator = setTimeout(function(){
     generatepowerBallNumbers();
     num1.innerHTML = numberList[counter][0];
     num2.innerHTML = numberList[counter][1];
@@ -61,7 +62,7 @@ pandaImage.addEventListener('click',function(){
     red1.innerHTML = numberList[counter][5];
     ppnum.innerHTML = genSingleNumberForBall(1, 5);
     addtothelist();
-});
+}, 60000);
 
 
 /*
@@ -77,27 +78,41 @@ function addtothelist() {
     var node = document.createTextNode(list);
     row.appendChild(node);
     ulist.appendChild(row);
+	counter =counter + 1;
+	// Since I donot have a database i need to work on limited numbers to save and display
+	
 }
+
 
 /*
 * ---------------------------------------------COUNTDOWN TO DAWING DATE---------------------
 */
-var drawingday = new Date("Wed Feb 24 2016 18:00:00 GMT-0500 (Eastern Standard Time)");
+var drawingday = new Date("Wed Feb 24 2016 22:59:00 GMT-0500 (Eastern Standard Time)");
 function getRemaining(drawingday, today) {
     time = Date.parse(drawingday) - Date.parse(today);
     return{
-        'day': drawingday.getDate() - today.getDate(),
+        'day': Math.floor(time/ (1000*60*60*24)),
         'hour': Math.floor((time / (1000 * 60 * 60)) % 24),
         'minutes': Math.floor((time / 1000 / 60) % 60),
         'seconds': Math.floor((time / 1000) % 60),
         }
 }
-function updateClock(){
-        t = getRemaining(drawingday, new Date());
+var timers = setInterval(function(){
+	    t = getRemaining(drawingday, new Date());
         remainday.innerText = t.day;
         remainhour.innerText = t.hour;
         remainmin.innerText = t.minutes;
         remainsec.innerText = t.seconds;
-}
-updateClock();
-setInterval(updateClock(), 1000);
+		if( t.day == 0 && t.hour == 0 && t.minutes == 0 && t.seconds == 0){
+			alert("It's powerball drawing time. Good luck Everyone!!");
+			var ttoday = new Date();
+			if (ttoday.getDay() == 6){
+				drawingday.setDate(drawingday.getDate() + 4 );
+			} else if(ttoday.getDay() ==4){
+				drawingday.setDate(drawingday.getDate() + 4 );
+			}
+			t = getRemaining(drawingday, new Date());
+			// to make sure there is new date after every drawing
+		}
+		},1000);
+		
